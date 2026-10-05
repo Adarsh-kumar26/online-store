@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MediNest – Your neighbourhood pharmacy, online</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pine: #12483b;
+    --pine-2: #1d5c4d;
+    --sage: #eaf1ec;
+    --sage-2: #d6e4da;
+    --paper: #ffffff;
+    --saffron: #f2b630;
+    --ink: #13221d;
+    --muted: #4f6158;
+    --line: #c9d8ce;
+    --bg: #f6f9f7;
+    --card: #ffffff;
+    --head: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+    --body: "Public Sans", "Segoe UI", system-ui, sans-serif;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0e1714; --card: #15211d; --sage: #172520; --sage-2: #213430;
+      --ink: #e7efe9; --muted: #a3b5ab; --line: #2d413a; --paper: #15211d;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0e1714; --card: #15211d; --sage: #172520; --sage-2: #213430;
+    --ink: #e7efe9; --muted: #a3b5ab; --line: #2d413a; --paper: #15211d;
+  }
+  html { scroll-padding-top: calc(80px + env(safe-area-inset-top, 0px)); scroll-behavior: smooth; }
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 17px; line-height: 1.6; }
+  a { color: inherit; }
+  button, input { font-family: inherit; font-size: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 3px solid var(--saffron); outline-offset: 2px; border-radius: 6px; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+  h1, h2, h3 { font-family: var(--head); margin: 0; letter-spacing: -0.02em; }
+  h2 { font-size: clamp(28px, 3.6vw, 40px); font-weight: 700; line-height: 1.1; }
+  .lede { color: var(--muted); max-width: 560px; margin: 12px 0 0; }
+
+  /* Header */
+  .header { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  .header-inner { display: flex; align-items: center; gap: 28px; height: 74px; }
+  .logo { display: flex; align-items: center; gap: 10px; font-family: var(--head); font-weight: 800; font-size: 24px; text-decoration: none; letter-spacing: -0.03em; }
+  .search { flex: 1; max-width: 440px; display: flex; align-items: center; gap: 8px; background: var(--card); border: 1.5px solid var(--line); border-radius: 999px; padding: 0 6px 0 16px; }
+  .search input { flex: 1; border: 0; background: none; color: var(--ink); padding: 10px 0; min-width: 0; }
+  .search input:focus { outline: none; }
+  .search:focus-within { border-color: var(--pine-2); }
+  .search button { border: 0; background: var(--pine); color: #fff; border-radius: 999px; padding: 6px 14px; font-weight: 600; font-size: 14px; }
+  .nav { display: flex; gap: 22px; margin-left: auto; align-items: center; }
+  .nav a { text-decoration: none; font-weight: 500; font-size: 15px; color: var(--muted); }
+  .nav a:hover { color: var(--ink); }
+  .cart-btn { display: flex; align-items: center; gap: 8px; border: 1.5px solid var(--ink); background: none; color: var(--ink); border-radius: 999px; padding: 7px 14px; font-weight: 600; font-size: 15px; }
+  .cart-btn .n { background: var(--saffron); color: #13221d; border-radius: 999px; min-width: 22px; height: 22px; display: grid; place-items: center; font-size: 12px; font-weight: 700; padding: 0 6px; }
+
+  /* Hero */
+  .hero { padding: 64px 0 80px; }
+  .hero-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 56px; align-items: center; }
+  .hero h1 { font-size: clamp(40px, 6vw, 72px); font-weight: 800; line-height: 0.98; letter-spacing: -0.04em; }
+  .hero .lede { font-size: 19px; margin-top: 22px; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+  .btn { border: 0; border-radius: 999px; padding: 14px 24px; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+  .btn-primary { background: var(--pine); color: #fff; }
+  .btn-primary:hover { background: var(--pine-2); }
+  .btn-ghost { background: none; border: 1.5px solid var(--line); color: var(--ink); }
+  .btn-ghost:hover { border-color: var(--ink); }
+  .hero-note { margin-top: 26px; font-size: 14px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: #2fae6a; box-shadow: 0 0 0 4px rgba(47,174,106,.18); }
+
+  /* The prescription label — the signature element */
+  .label-stage { position: relative; padding: 20px; }
+  .bottle { background: var(--pine); border-radius: 28px 28px 36px 36px; padding: 70px 26px 36px; position: relative; }
+  .bottle::before { content: ""; position: absolute; top: -26px; left: 18%; right: 18%; height: 48px; background: #e9eee9; border-radius: 10px 10px 6px 6px; background-image: repeating-linear-gradient(90deg, transparent 0 10px, rgba(0,0,0,.08) 10px 12px); }
+  .rx { background: #fffdf6; color: #1b241f; border-radius: 6px; padding: 20px 22px 18px; font-size: 14px; box-shadow: 0 1px 0 rgba(0,0,0,.05); transform: rotate(-1.2deg); }
+  .rx-top { display: flex; justify-content: space-between; align-items: baseline; border-bottom: 2px solid #1b241f; padding-bottom: 8px; margin-bottom: 12px; }
+  .rx-top strong { font-family: var(--head); font-size: 18px; }
+  .rx-top span { font-size: 12px; color: #5c6a62; }
+  .rx-row { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; border-bottom: 1px dashed #cfd6d1; }
+  .rx-row span:first-child { color: #5c6a62; }
+  .rx-row span:last-child { font-weight: 600; text-align: right; }
+  .status { margin-top: 14px; }
+  .status-track { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .status-track i { height: 6px; border-radius: 3px; background: #dfe6e1; transition: background .5s; }
+  .status-track i.on { background: #2fae6a; }
+  .status-text { margin-top: 8px; font-weight: 600; font-size: 13px; min-height: 20px; }
+  .sticker { position: absolute; right: -6px; bottom: 28px; background: var(--saffron); color: #13221d; font-family: var(--head); font-weight: 700; font-size: 15px; line-height: 1.15; width: 118px; height: 118px; border-radius: 50%; display: grid; place-items: center; text-align: center; padding: 14px; transform: rotate(10deg); box-shadow: 0 6px 18px rgba(0,0,0,.18); }
+
+  /* Categories */
+  .section { padding: 80px 0; }
+  .section-head { display: flex; justify-content: space-between; align-items: end; gap: 24px; margin-bottom: 32px; flex-wrap: wrap; }
+  .cats { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+  .cat { background: var(--card); border: 1.5px solid var(--line); border-radius: 18px; padding: 20px 16px; text-align: left; color: var(--ink); display: flex; flex-direction: column; gap: 22px; min-height: 140px; }
+  .cat:hover { border-color: var(--pine-2); }
+  .cat.active { background: var(--pine); border-color: var(--pine); color: #fff; }
+  .cat-icon { width: 40px; height: 40px; border-radius: 12px; background: var(--sage); display: grid; place-items: center; color: var(--pine); }
+  .cat.active .cat-icon { background: rgba(255,255,255,.15); color: #fff; }
+  .cat strong { font-family: var(--head); font-size: 17px; font-weight: 700; line-height: 1.2; }
+
+  /* Products */
+  .products { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 28px; }
+  .product { background: var(--card); border-radius: 20px; padding: 14px; display: flex; flex-direction: column; border: 1px solid var(--line); }
+  .p-img { background: var(--sage); border-radius: 14px; aspect-ratio: 4/3; display: grid; place-items: center; margin-bottom: 14px; }
+  .product h3 { font-size: 17px; font-weight: 700; line-height: 1.25; }
+  .product .meta { font-size: 14px; color: var(--muted); margin: 4px 0 14px; }
+  .p-foot { margin-top: auto; display: flex; justify-content: space-between; align-items: center; }
+  .price { font-family: var(--head); font-weight: 700; font-size: 20px; }
+  .add { border: 0; background: var(--sage-2); color: var(--ink); border-radius: 999px; padding: 8px 14px; font-weight: 600; font-size: 14px; }
+  .add:hover { background: var(--pine); color: #fff; }
+  .add.added { background: var(--pine); color: #fff; }
+  .rx-tag { display: inline-block; font-size: 12px; font-weight: 600; background: #fff1cc; color: #6b4d00; border-radius: 6px; padding: 2px 8px; margin-bottom: 6px; }
+  .empty { grid-column: 1 / -1; padding: 40px; text-align: center; color: var(--muted); border: 1.5px dashed var(--line); border-radius: 18px; }
+
+  /* How it works */
+  .how { background: var(--pine); color: #e9f2ec; border-radius: 36px; margin: 0 16px; padding: 80px 0; }
+  .how h2 { color: #fff; }
+  .how .lede { color: #b9d0c3; }
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 48px; counter-reset: step; }
+  .step { padding: 0 32px 0 0; border-top: 2px solid rgba(255,255,255,.2); padding-top: 24px; position: relative; }
+  .step + .step { padding-left: 32px; }
+  .step-num { font-family: var(--head); font-weight: 800; font-size: 56px; line-height: 1; color: var(--saffron); }
+  .step h3 { color: #fff; font-size: 22px; margin: 14px 0 8px; }
+  .step p { margin: 0; color: #b9d0c3; }
+
+  /* Promises */
+  .promises { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1.5px solid var(--line); border-bottom: 1.5px solid var(--line); }
+  .promise { padding: 28px 24px; }
+  .promise + .promise { border-left: 1.5px solid var(--line); }
+  .promise strong { font-family: var(--head); font-size: 19px; display: block; margin-bottom: 6px; }
+  .promise p { margin: 0; color: var(--muted); font-size: 15px; }
+
+  /* Reviews */
+  .reviews { display: grid; grid-template-columns: 1fr 1.4fr; gap: 56px; align-items: center; }
+  .quote { background: var(--card); border: 1px solid var(--line); border-radius: 28px; padding: 40px; position: relative; }
+  .quote blockquote { margin: 0; font-family: var(--head); font-size: clamp(20px, 2.2vw, 26px); font-weight: 500; line-height: 1.35; letter-spacing: -0.01em; }
+  .quote-by { display: flex; align-items: center; gap: 12px; margin-top: 26px; }
+  .avatar { width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; color: #fff; }
+  .quote-by small { display: block; color: var(--muted); font-size: 14px; }
+  .switch { display: flex; gap: 8px; margin-top: 24px; }
+  .switch button { border: 1.5px solid var(--line); background: var(--card); color: var(--ink); border-radius: 999px; padding: 8px 14px; font-size: 14px; font-weight: 600; }
+  .switch button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .rating-big { font-family: var(--head); font-size: 88px; font-weight: 800; line-height: 1; letter-spacing: -0.05em; }
+  .stars { color: var(--saffron); font-size: 22px; letter-spacing: 3px; }
+
+  /* Pharmacist band */
+  .ask { background: var(--saffron); color: #13221d; border-radius: 28px; padding: 44px; display: flex; justify-content: space-between; align-items: center; gap: 30px; flex-wrap: wrap; }
+  .ask h2 { font-size: clamp(26px, 3vw, 34px); max-width: 560px; }
+  .ask p { margin: 8px 0 0; max-width: 520px; }
+  .ask .btn { background: #13221d; color: #fff; }
+
+  /* Footer */
+  .footer { margin-top: 80px; background: var(--sage); padding: 64px 0 32px; }
+  .f-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 32px; }
+  .f-grid p { color: var(--muted); font-size: 15px; margin: 14px 0 0; max-width: 340px; }
+  .f-grid h4 { font-family: var(--head); font-size: 16px; margin: 0 0 12px; }
+  .f-grid a { display: block; text-decoration: none; color: var(--muted); font-size: 15px; margin-bottom: 8px; }
+  .f-grid a:hover { color: var(--ink); }
+  .f-bottom { margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+
+  .toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 12px 20px; border-radius: 999px; font-size: 15px; font-weight: 500; z-index: 40; }
+
+  /* Responsive */
+  @media (max-width: 1000px) {
+    .cats { grid-template-columns: repeat(3, 1fr); }
+    .products { grid-template-columns: repeat(2, 1fr); }
+    .promises { grid-template-columns: repeat(2, 1fr); }
+    .promise:nth-child(3) { border-left: 0; }
+    .promise:nth-child(n+3) { border-top: 1.5px solid var(--line); }
+    .f-grid { grid-template-columns: 1fr 1fr; }
+    .nav a { display: none; }
+  }
+  @media (max-width: 820px) {
+    .hero-grid, .reviews { grid-template-columns: 1fr; gap: 40px; }
+    .steps { grid-template-columns: 1fr; gap: 32px; }
+    .step, .step + .step { padding-left: 0; padding-right: 0; }
+    .header-inner { flex-wrap: wrap; height: auto; padding: 12px 24px; gap: 12px; }
+    .search { order: 3; max-width: none; flex-basis: 100%; }
+    .how { margin: 0; border-radius: 0; }
+  }
+  @media (max-width: 520px) {
+    .cats { grid-template-columns: repeat(2, 1fr); }
+    .products, .promises { grid-template-columns: 1fr; }
+    .promise + .promise { border-left: 0; border-top: 1.5px solid var(--line); }
+    .f-grid { grid-template-columns: 1fr; }
+    .ask, .quote { padding: 28px; }
+    .sticker { width: 96px; height: 96px; font-size: 13px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .status-track i { transition: none; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.5/babel.min.js"></script>
+
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+/* ---------- Data (later: fetch these from your Node.js API) ---------- */
+const CATEGORIES = [
+  { id: "all", name: "Everything", icon: "grid" },
+  { id: "pain", name: "Pain & fever", icon: "thermo" },
+  { id: "allergy", name: "Allergy & cold", icon: "leaf" },
+  { id: "diabetes", name: "Diabetes care", icon: "drop" },
+  { id: "heart", name: "Heart health", icon: "heart" },
+  { id: "vitamins", name: "Vitamins", icon: "sun" },
+];
+
+const PRODUCTS = [
+  { id: 1, name: "Paracetamol 500mg", meta: "Strip of 15 tablets", price: 2.4, cat: "pain", color: "#e8f0fb", shape: "tab" },
+  { id: 2, name: "Cetirizine 10mg", meta: "Strip of 10 tablets", price: 3.1, cat: "allergy", color: "#fdf1e6", shape: "tab" },
+  { id: 3, name: "Glucose test strips", meta: "Box of 50", price: 18.5, cat: "diabetes", color: "#eaf6ef", shape: "box" },
+  { id: 4, name: "Vitamin D3 1000 IU", meta: "60 softgels", price: 9.9, cat: "vitamins", color: "#fff6da", shape: "bottle" },
+  { id: 5, name: "Amlodipine 5mg", meta: "Strip of 30 tablets", price: 6.2, cat: "heart", color: "#fdebee", shape: "tab", rx: true },
+  { id: 6, name: "Ibuprofen gel 5%", meta: "50g tube", price: 7.3, cat: "pain", color: "#eef0fb", shape: "tube" },
+  { id: 7, name: "Saline nasal spray", meta: "30ml", price: 4.8, cat: "allergy", color: "#e7f6f6", shape: "bottle" },
+  { id: 8, name: "Digital BP monitor", meta: "Upper arm, 1 unit", price: 34.0, cat: "heart", color: "#f0eefb", shape: "box" },
+];
+
+const STEPS = [
+  { title: "Upload your prescription", text: "Snap a photo or have your doctor send it to us directly. Shopping for everyday health products? Skip this step." },
+  { title: "A pharmacist checks it", text: "A licensed pharmacist reviews every prescription order and calls you if anything needs clarifying." },
+  { title: "Delivered next day", text: "Sealed, discreet packaging, tracked to your door. Refills remind you before you run out." },
+];
+
+const PROMISES = [
+  { title: "Licensed pharmacy", text: "Registered and inspected, with a pharmacist on every shift." },
+  { title: "Genuine medicine", text: "Sourced only from authorised distributors, never grey-market." },
+  { title: "Secure checkout", text: "Cards, UPI, and PayPal, encrypted end to end." },
+  { title: "Free returns", text: "Unopened health products can be returned within 30 days." },
+];
+
+const REVIEWS = [
+  { name: "Priya Menon", note: "Monthly refills since 2025", color: "#b5536b", text: "The pharmacist called to check a dose change my doctor had made. That one call is why I stopped going anywhere else." },
+  { name: "Daniel Hughes", note: "Ordered for his father", color: "#2f7a5f", text: "I order for my dad from another city. Tracking updates come to both of us, and the refill reminder means he never runs short." },
+  { name: "Arjun Rao", note: "Diabetes supplies", color: "#5a4fb0", text: "Test strips cost less than at my local chemist, and they've arrived the next morning every single time." },
+];
+
+/* ---------- Icons ---------- */
+function Icon({ name, size = 22 }) {
+  const s = { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 2, strokeLinecap: "round", strokeLinejoin: "round", "aria-hidden": true };
+  const paths = {
+    grid: <><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></>,
+    thermo: <><path d="M14 14.8V4a2 2 0 0 0-4 0v10.8a4 4 0 1 0 4 0z"/></>,
+    leaf: <><path d="M5 19c0-9 6-14 15-14 0 9-5 15-14 15"/><path d="M5 19l7-7"/></>,
+    drop: <><path d="M12 3s6 7 6 11a6 6 0 0 1-12 0c0-4 6-11 6-11z"/></>,
+    heart: <><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></>,
+    sun: <><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></>,
+    bag: <><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></>,
+    upload: <><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></>,
+    chat: <><path d="M4 5h16v11H9l-5 4V5z"/></>,
+  };
+  return <svg {...s}>{paths[name]}</svg>;
+}
+
+function LogoMark() {
+  return (
+    <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+      <rect width="34" height="34" rx="10" fill="#12483b"/>
+      <path d="M14 8h6v6h6v6h-6v6h-6v-6H8v-6h6z" fill="#f2b630"/>
+    </svg>
+  );
+}
+
+function ProductArt({ shape, color }) {
+  return (
+    <div className="p-img" style={{ background: color }}>
+      <svg width="96" height="72" viewBox="0 0 96 72" aria-hidden="true">
+        {shape === "tab" && <g><rect x="10" y="12" width="76" height="48" rx="6" fill="#cfd5db"/>{[0,1,2].map(c=>[0,1].map(r=><circle key={c+"-"+r} cx={26+c*22} cy={26+r*20} r="7" fill="#fff" stroke="#9aa3ab"/>))}</g>}
+        {shape === "box" && <g><rect x="22" y="10" width="52" height="54" rx="4" fill="#12483b"/><rect x="28" y="22" width="40" height="14" rx="2" fill="#fff"/><path d="M44 46h8M48 42v8" stroke="#f2b630" strokeWidth="3"/></g>}
+        {shape === "bottle" && <g><rect x="36" y="6" width="24" height="10" rx="2" fill="#2d3a34"/><rect x="30" y="16" width="36" height="50" rx="8" fill="#c98a2b"/><rect x="33" y="30" width="30" height="20" rx="2" fill="#fffdf6"/></g>}
+        {shape === "tube" && <g><path d="M24 30h44l8 6-8 6H24z" fill="#5a7bd6"/><rect x="14" y="31" width="12" height="10" rx="2" fill="#2d3a34"/><rect x="34" y="33" width="24" height="6" rx="1" fill="#fff"/></g>}
+      </svg>
+    </div>
+  );
+}
+
+/* ---------- Sections ---------- */
+function Header({ cartCount, query, setQuery, onSearch }) {
+  return (
+    <header className="header">
+      <div className="wrap header-inner">
+        <a href="#" className="logo"><LogoMark />MediNest</a>
+        <form className="search" role="search" onSubmit={e => { e.preventDefault(); onSearch(); }}>
+          <input type="search" aria-label="Search medicines" placeholder="Search medicines and health products" value={query} onChange={e => setQuery(e.target.value)} />
+          <button type="submit">Search</button>
+        </form>
+        <nav className="nav" aria-label="Main">
+          <a href="#shop">Shop</a>
+          <a href="#how">How it works</a>
+          <a href="#reviews">Reviews</a>
+          <button className="cart-btn" aria-label={`Cart, ${cartCount} items`}>
+            <Icon name="bag" size={18} />Cart<span className="n">{cartCount}</span>
+          </button>
+        </nav>
+      </div>
+    </header>
+  );
+}
+
+function PrescriptionLabel() {
+  const stages = ["Prescription received", "Checked by pharmacist", "Out for delivery"];
+  const [stage, setStage] = useState(0);
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { setStage(2); return; }
+    const id = setInterval(() => setStage(s => (s + 1) % 3), 1800);
+    return () => clearInterval(id);
+  }, []);
+  return (
+    <div className="label-stage" aria-label="Example prescription order">
+      <div className="bottle">
+        <div className="rx">
+          <div className="rx-top"><strong>MediNest Pharmacy</strong><span>Order #48213</span></div>
+          <div className="rx-row"><span>Patient</span><span>A. Sharma</span></div>
+          <div className="rx-row"><span>Medicine</span><span>Metformin 500mg</span></div>
+          <div className="rx-row"><span>Directions</span><span>1 tablet twice daily with meals</span></div>
+          <div className="rx-row"><span>Checked by</span><span>R. Iyer, pharmacist</span></div>
+          <div className="status">
+            <div className="status-track">{stages.map((_, i) => <i key={i} className={i <= stage ? "on" : ""} />)}</div>
+            <div className="status-text" aria-live="polite">{stages[stage]}</div>
+          </div>
+        </div>
+      </div>
+      <div className="sticker">Free delivery over $50</div>
+    </div>
+  );
+}
+
+function Hero({ onUpload }) {
+  return (
+    <section className="hero">
+      <div className="wrap hero-grid">
+        <div>
+          <h1>Your pharmacy, checked by a real pharmacist and at your door tomorrow.</h1>
+          <p className="lede">Order prescriptions and everyday health products online. Every order is reviewed by a licensed pharmacist before it leaves us.</p>
+          <div className="hero-actions">
+            <button className="btn btn-primary" onClick={onUpload}><Icon name="upload" size={18} />Upload prescription</button>
+            <a className="btn btn-ghost" href="#shop">Browse products</a>
+          </div>
+          <div className="hero-note"><span className="dot" />Pharmacists available now, 8am to 10pm</div>
+        </div>
+        <PrescriptionLabel />
+      </div>
+    </section>
+  );
+}
+
+function Shop({ cat, setCat, query, cart, addToCart }) {
+  const q = query.trim().toLowerCase();
+  const list = PRODUCTS.filter(p => (cat === "all" || p.cat === cat) && (!q || p.name.toLowerCase().includes(q)));
+  return (
+    <section className="section" id="shop">
+      <div className="wrap">
+        <div className="section-head">
+          <div>
+            <h2>Shop by what you need</h2>
+            <p className="lede">Pick a category, or search above for a specific medicine.</p>
+          </div>
+        </div>
+        <div className="cats" role="group" aria-label="Categories">
+          {CATEGORIES.map(c => (
+            <button key={c.id} className={"cat" + (cat === c.id ? " active" : "")} aria-pressed={cat === c.id} onClick={() => setCat(c.id)}>
+              <span className="cat-icon"><Icon name={c.icon} /></span>
+              <strong>{c.name}</strong>
+            </button>
+          ))}
+        </div>
+        <div className="products">
+          {list.length === 0 && <div className="empty">No products match "{query}". Try a shorter name, or upload a prescription and we'll find it for you.</div>}
+          {list.map(p => {
+            const inCart = cart[p.id];
+            return (
+              <article className="product" key={p.id}>
+                <ProductArt shape={p.shape} color={p.color} />
+                {p.rx && <span className="rx-tag">Prescription needed</span>}
+                <h3>{p.name}</h3>
+                <div className="meta">{p.meta}</div>
+                <div className="p-foot">
+                  <span className="price">${p.price.toFixed(2)}</span>
+                  <button className={"add" + (inCart ? " added" : "")} onClick={() => addToCart(p)}>
+                    {inCart ? `In cart (${inCart})` : "Add to cart"}
+                  </button>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function HowItWorks() {
+  return (
+    <section className="how" id="how">
+      <div className="wrap">
+        <h2>How a prescription order works</h2>
+        <p className="lede">Three steps, and a pharmacist looks at every one.</p>
+        <div className="steps">
+          {STEPS.map((s, i) => (
+            <div className="step" key={s.title}>
+              <div className="step-num">{i + 1}</div>
+              <h3>{s.title}</h3>
+              <p>{s.text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Promises() {
+  return (
+    <section className="section">
+      <div className="wrap">
+        <div className="promises">
+          {PROMISES.map(p => <div className="promise" key={p.title}><strong>{p.title}</strong><p>{p.text}</p></div>)}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Reviews() {
+  const [i, setI] = useState(0);
+  const r = REVIEWS[i];
+  return (
+    <section className="section" id="reviews" style={{ paddingTop: 0 }}>
+      <div className="wrap reviews">
+        <div>
+          <div className="rating-big">4.8</div>
+          <div className="stars" aria-label="4.8 out of 5 stars">★★★★★</div>
+          <p className="lede">Average rating from 2,300 verified customers. Here's what a few of them said.</p>
+          <div className="switch" role="group" aria-label="Choose a review">
+            {REVIEWS.map((rv, idx) => (
+              <button key={rv.name} aria-pressed={idx === i} onClick={() => setI(idx)}>{rv.name.split(" ")[0]}</button>
+            ))}
+          </div>
+        </div>
+        <figure className="quote" style={{ margin: 0 }}>
+          <blockquote>"{r.text}"</blockquote>
+          <figcaption className="quote-by">
+            <span className="avatar" style={{ background: r.color }}>{r.name.split(" ").map(w => w[0]).join("")}</span>
+            <span><strong>{r.name}</strong><small>{r.note}</small></span>
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+  );
+}
+
+function AskPharmacist({ onAsk }) {
+  return (
+    <section className="wrap">
+      <div className="ask">
+        <div>
+          <h2>Not sure what to take? Ask a pharmacist.</h2>
+          <p>Free advice on doses, side effects, and interactions with medicines you already take.</p>
+        </div>
+        <button className="btn" onClick={onAsk}><Icon name="chat" size={18} />Start a chat</button>
+      </div>
+    </section>
+  );
+}
+
+function Footer() {
+  const cols = [
+    { h: "Shop", items: ["Prescriptions", "Pain & fever", "Allergy & cold", "Vitamins"] },
+    { h: "Help", items: ["Track an order", "Returns", "Contact us", "FAQ"] },
+    { h: "Read", items: ["Generic vs. branded medicine", "Storing medicine at home", "Reading a prescription label"] },
+  ];
+  return (
+    <footer className="footer">
+      <div className="wrap">
+        <div className="f-grid">
+          <div>
+            <a href="#" className="logo"><LogoMark />MediNest</a>
+            <p>A licensed online pharmacy. Prescription medicines are dispensed only against a valid prescription. Information on this site doesn't replace advice from your doctor.</p>
+          </div>
+          {cols.map(c => (
+            <div key={c.h}>
+              <h4>{c.h}</h4>
+              {c.items.map(it => <a href="#" key={it}>{it}</a>)}
+            </div>
+          ))}
+        </div>
+        <div className="f-bottom">
+          <span>© {new Date().getFullYear()} MediNest (demo)</span>
+          <span><a href="#">Privacy</a>&nbsp;&nbsp;&nbsp;<a href="#">Terms</a></span>
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ---------- App ---------- */
+function App() {
+  const [cart, setCart] = useState({});
+  const [cat, setCat] = useState("all");
+  const [query, setQuery] = useState("");
+  const [toast, setToast] = useState("");
+  const cartCount = Object.values(cart).reduce((a, b) => a + b, 0);
+
+  const notify = msg => { setToast(msg); clearTimeout(window.__t); window.__t = setTimeout(() => setToast(""), 2400); };
+  const addToCart = p => { setCart(c => ({ ...c, [p.id]: (c[p.id] || 0) + 1 })); notify(`Added ${p.name} to cart`); };
+  const onSearch = () => { setCat("all"); document.getElementById("shop").scrollIntoView(); };
+
+  return (
+    <>
+      <Header cartCount={cartCount} query={query} setQuery={setQuery} onSearch={onSearch} />
+      <main>
+        <Hero onUpload={() => notify("Prescription upload opens here (demo)")} />
+        <Shop cat={cat} setCat={setCat} query={query} cart={cart} addToCart={addToCart} />
+        <HowItWorks />
+        <Promises />
+        <Reviews />
+        <AskPharmacist onAsk={() => notify("Pharmacist chat opens here (demo)")} />
+      </main>
+      <Footer />
+      {toast && <div className="toast" role="status">{toast}</div>}
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
